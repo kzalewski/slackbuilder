@@ -62,7 +62,7 @@
 @bindirs = ('usr/bin/', 'bin/', 'sbin/', 'usr/sbin/', 'usr/X11R6/bin/');
 
 # parse arguments (if any)
-if(! defined @ARGV) {
+if(! @ARGV) {
     print "You must provide the name of a package to test\n";
     print "\nUsage:\n\t$0 pkg_name-ver-arch-rel.{tgz,txz}\n\n";
     exit;
