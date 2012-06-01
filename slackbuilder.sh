@@ -840,7 +840,7 @@ exec_var_cmds "$pre_package_cmds" "Pre-package" || exit 1
 # First, determine the name of the resulting package, properly generating
 # the release number.
 
-cd $pkg_archive
+cd $pkg_archive || exit 1
 
 pkgbase_arch=$pkgbase-${pkgarch}
 if [ $lowercase -eq 1 ]; then
