@@ -4,7 +4,7 @@
 #
 # Written by Ken Zalewski
 # First release on 2012-04-02
-# Last revised on 2012-07-18
+# Last revised on 2012-07-25
 #
 
 PROG=`basename $0`
@@ -254,6 +254,24 @@ exec_var_cmds() {
     echo "$PROG: No [$phase] commands to process from script variable" >&2
     return 0
   fi
+}
+
+generate_config_installer_func() {
+  cat <<"EOF"
+install_config_file() {
+  cfgfile="$1"
+  origcfgfile=`echo $cfgfile | sed "s;\.new\$;;"`
+  if [ -f "$origcfgfile" ]; then
+    echo "Leaving file $origcfgfile in tact"
+    if cmp -s "$origcfgfile" "$cfgfile"; then
+      echo "Removing $cfgfile since it is identical to $origcfgfile"
+      rm "$cfgfile"
+    fi
+  else
+    mv "$cfgfile" "$origcfgfile"
+  fi
+}
+EOF
 }
 
 
@@ -788,10 +806,10 @@ EOF
   done
 
   if [ "$new_files" ]; then
-    echo "# Install new conf files if an old version does not exist." > $DOINST.tmp
+    generate_config_installer_func > $DOINST.tmp
+    echo "# Handle the installation of config files." >> $DOINST.tmp
     for cf in $new_files; do
-      origcf=`echo $cf | sed "s;\.new\$;;"`
-      echo "[ -f $origcf ] && echo Leaving file $origcf in tact || cp $cf $origcf" >> $DOINST.tmp
+      echo "install_config_file $cf" >> $DOINST.tmp
     done
 
     # Prepend the "new files" scripting to any current doinst scripting.
