@@ -204,7 +204,7 @@ is_config_section() {
 get_config_section() {
   local cfgfile="$1"
   local cfgsect="$2"
-  sed -n -e "/^\[$cfgsect\] *\$/,/^\[/p" "$cfgfile" | egrep -v '^(\[|#)'
+  sed -n -e "/^\[$cfgsect\] *\$/,/^\[[^ ]/p" "$cfgfile" | egrep -v '^(\[|#)'
 }
 
 gen_slack_desc() {
