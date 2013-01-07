@@ -135,7 +135,7 @@ gen_slack_desc() {
   local pkgrname="$3"
   local pkgrmail="$4"
   local lcaseopt=
-  [ "$pkgname" ] || pkgname=`echo $cfgfile | cut -d. -f1`
+  [ "$pkgname" ] || pkgname=`basename $cfgfile | cut -d. -f1`
   [ "$lowercase" ] || lowercase=0
   [ $lowercase -eq 1 ] && lcaseopt="--lowercase"
   get_config_section "$cfgfile" "slack-desc" | \
