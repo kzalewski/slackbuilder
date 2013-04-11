@@ -329,6 +329,7 @@ if [ $skip_untar_stage -eq 0 ]; then
   case $archive_type in
     bzip2) UNARCHIVE_CMD="tar -C $compiledir -jxvf" ;;
     gzip) UNARCHIVE_CMD="tar -C $compiledir -zxvf" ;;
+    XZ) UNARCHIVE_CMD="tar -C $compiledir -Jxvf" ;;
     Zip) UNARCHIVE_CMD="unzip -d $compiledir" ;;
     *) echo "$PROG: $archive_file: Unknown file type" >&2 ; exit 1 ;;
   esac
