@@ -204,7 +204,7 @@ if [ "$archive_file" ]; then
 else
   # Escape any pluses in pkgbase for the egrep pattern.
   pkgbase_pt=`echo $pkgbase | sed 's;+;[+];g'`
-  archive_file=`ls -1 | egrep "^$pkgbase_pt([_\.][A-Za-z0-9]+)?\.(tar\.(gz|bz2|lzma|xz)|(tgz|tbz2|tbz|tlz|txz|zip))"`
+  archive_file=`ls -1 | egrep "^$pkgbase_pt([_\.\-][A-Za-z0-9]+)*\.(tar\.(gz|bz2|lzma|xz)|(tgz|tbz2|tbz|tlz|txz|zip))"`
 
   if [ $? -ne 0 -a $skip_untar_stage -eq 0 ]; then
     echo "$PROG: Unable to find package $pkgname at version $pkgversion" >&2
