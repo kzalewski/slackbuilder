@@ -4,7 +4,7 @@
 #
 # Written by Ken Zalewski
 # First release on 2012-04-02
-# Last revised on 2013-01-06
+# Last revised on 2014-05-16
 #
 
 PROG=`basename $0`
@@ -59,7 +59,7 @@ libdirsuffix_varname=DEFAULT_LIBDIRSUFFIX_$ARCH
 
 
 usage() {
-  echo "Usage: $PROG [-a pkgarch] [-c] [-d build_dir] [-e] [-f archive_file] [-i] [-k] [-n nval] [-o buildopt] [-p pname/pemail/pinits] [-r num] [-s slackver] [-v] [-x] [--arch-cflags gcc-opts] [--notar] [--nocfg] [--nomk] [--noinst] [--noprep] [--nopkg] [--uo] [--cb] [--ucb] [--ip] [--pp] [--po] [--desc] [--gg config_group] packagename version" >&2
+  echo "Usage: $PROG [-a pkgarch] [-c] [-d build_dir] [-e] [-f archive_file] [-i] [-k] [-n nval] [-o buildopt] [-p pname/pemail/pinits] [-r num] [-s slackver] [-v] [-x] [--arch-cflags gcc-opts] [--notar] [--nocfg] [--nomk] [--noinst] [--noprep] [--nopkg] [--uo] [--cm] [--ucm] [--mi] [--ip] [--pp] [--po] [--desc] [--gg config_group] packagename version" >&2
   echo "   -a pkgarch: package architecture, such as i486, i686, x86_64, noarch" >&2
   echo "   -c: chown bin directories to root:bin (not necessary since Slackware 11)" >&2
   echo "   -d build_dir: use build_dir as the base for building the package (default: $CURDIR/<pkgname>$BSUFFIX" >&2
@@ -82,8 +82,9 @@ usage() {
   echo "   --noprep: skip the prepare stage" >&2
   echo "   --nopkg: skip the final makepkg stage" >&2
   echo "   --uo: untar only (same as --nocfg --nomk --noinst --noprep --nopkg)" >&2
-  echo "   --cb: configure and build (same as --notar --noinst --noprep --nopkg)" >&2
-  echo "   --ucb: untar, configure, and build (same as --noinst --noprep --nopkg)" >&2
+  echo "   --cm: configure and make (same as --notar --noinst --noprep --nopkg)" >&2
+  echo "   --ucm: untar, configure, and make (same as --noinst --noprep --nopkg)" >&2
+  echo "   --mi: make and install (same as --notar --nocfg --noinst --noprep --nopkg" >&2
   echo "   --ip: install and package (same as --notar --nocfg --nomk)" >&2
   echo "   --pp: prepare and package (same as --notar --nocfg --nomk --noinst)" >&2
   echo "   --po: package only (same as --notar --nocfg --nomk --noinst --noprep)" >&2
@@ -143,10 +144,12 @@ while [ $# -gt 0 ]; do
     --arch-cflags) shift; ARCH_CFLAGS="$1" ;;
     --uo) skip_untar_stage=0; skip_config_stage=1; skip_make_stage=1;
           skip_install_stage=1; skip_prepare_stage=1; skip_pkg_stage=1 ;;
-    --cb) skip_untar_stage=1; skip_config_stage=0; skip_make_stage=0;
+    --cm) skip_untar_stage=1; skip_config_stage=0; skip_make_stage=0;
           skip_install_stage=1; skip_prepare_stage=1; skip_pkg_stage=1 ;;
-    --ucb) skip_untar_stage=0; skip_config_stage=0; skip_make_stage=0;
+    --ucm) skip_untar_stage=0; skip_config_stage=0; skip_make_stage=0;
           skip_install_stage=1; skip_prepare_stage=1; skip_pkg_stage=1 ;;
+    --mi) skip_untar_stage=1; skip_config_stage=1; skip_make_stage=0;
+          skip_install_stage=0; skip_prepare_stage=1; skip_pkg_stage=1 ;;
     --ip) skip_untar_stage=1; skip_config_stage=1; skip_make_stage=1;
           skip_install_stage=0; skip_prepare_stage=0; skip_pkg_stage=0 ;;
     --pp) skip_untar_stage=1; skip_config_stage=1; skip_make_stage=1;
