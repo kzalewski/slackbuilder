@@ -4,7 +4,8 @@
 #
 # Written by Ken Zalewski
 # First release on 2012-04-02
-# Last revised on 2014-05-16
+# Revised on 2014-05-16
+# Last revised on 2015-06-12 - Added --mo (make-only) option
 #
 
 PROG=`basename $0`
@@ -84,7 +85,8 @@ usage() {
   echo "   --uo: untar only (same as --nocfg --nomk --noinst --noprep --nopkg)" >&2
   echo "   --cm: configure and make (same as --notar --noinst --noprep --nopkg)" >&2
   echo "   --ucm: untar, configure, and make (same as --noinst --noprep --nopkg)" >&2
-  echo "   --mi: make and install (same as --notar --nocfg --noinst --noprep --nopkg" >&2
+  echo "   --mo: make only (same as --notar --nocfg --noinst --noprep --nopkg" >&2
+  echo "   --mi: make and install (same as --notar --nocfg --noprep --nopkg" >&2
   echo "   --ip: install and package (same as --notar --nocfg --nomk)" >&2
   echo "   --pp: prepare and package (same as --notar --nocfg --nomk --noinst)" >&2
   echo "   --po: package only (same as --notar --nocfg --nomk --noinst --noprep)" >&2
@@ -147,6 +149,8 @@ while [ $# -gt 0 ]; do
     --cm) skip_untar_stage=1; skip_config_stage=0; skip_make_stage=0;
           skip_install_stage=1; skip_prepare_stage=1; skip_pkg_stage=1 ;;
     --ucm) skip_untar_stage=0; skip_config_stage=0; skip_make_stage=0;
+          skip_install_stage=1; skip_prepare_stage=1; skip_pkg_stage=1 ;;
+    --mo) skip_untar_stage=1; skip_config_stage=1; skip_make_stage=0;
           skip_install_stage=1; skip_prepare_stage=1; skip_pkg_stage=1 ;;
     --mi) skip_untar_stage=1; skip_config_stage=1; skip_make_stage=0;
           skip_install_stage=0; skip_prepare_stage=1; skip_pkg_stage=1 ;;
