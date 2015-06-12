@@ -60,7 +60,7 @@ libdirsuffix_varname=DEFAULT_LIBDIRSUFFIX_$ARCH
 
 
 usage() {
-  echo "Usage: $PROG [-a pkgarch] [-c] [-d build_dir] [-e] [-f archive_file] [-i] [-k] [-n nval] [-o buildopt] [-p pname/pemail/pinits] [-r num] [-s slackver] [-v] [-x] [--arch-cflags gcc-opts] [--notar] [--nocfg] [--nomk] [--noinst] [--noprep] [--nopkg] [--uo] [--cm] [--ucm] [--mi] [--ip] [--pp] [--po] [--desc] [--gg config_group] packagename version" >&2
+  echo "Usage: $PROG [-a pkgarch] [-c] [-d build_dir] [-e] [-f archive_file] [-i] [-k] [-n nval] [-o buildopt] [-p pname/pemail/pinits] [-r num] [-s slackver] [-v] [-x] [--arch-cflags gcc-opts] [--notar] [--nocfg] [--nomk] [--noinst] [--noprep] [--nopkg] [--uo] [--cm] [--ucm] [--mo] [--mi] [--ip] [--pp] [--po] [--desc] [--gg config_group] packagename version" >&2
   echo "   -a pkgarch: package architecture, such as i486, i686, x86_64, noarch" >&2
   echo "   -c: chown bin directories to root:bin (not necessary since Slackware 11)" >&2
   echo "   -d build_dir: use build_dir as the base for building the package (default: $CURDIR/<pkgname>$BSUFFIX" >&2
