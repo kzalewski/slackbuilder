@@ -6,6 +6,7 @@
 # First release on 2012-04-02
 # Revised on 2014-05-16
 # Last revised on 2015-06-12 - Added --mo (make-only) option
+# Last revised on 2015-07-14 - Added pre-untar, post-untar, and post-config
 #
 
 PROG=`basename $0`
@@ -240,6 +241,9 @@ make_opts=
 config_subdir=
 compile_subdir=
 doc_subdir=
+pre_untar_cmds=
+create_untar_dir=0
+post_untar_cmds=
 pre_config_cmds=
 post_config_cmds=
 make_env_vars=
@@ -332,16 +336,29 @@ if [ $skip_untar_stage -eq 0 ]; then
 
   echo "STAGE 1: Un-archive the source code"
 
+  exec_cfg_cmds "$pkgconfig" "pre-untar" || exit 1
+  exec_var_cmds "$pre_untar_cmds" "Pre-untar" || exit 1
+
+  if [ $create_untar_dir -eq 1 ]; then
+    untardir="$compiledir/$pkgversion"
+    mkdir -p "$untardir"
+  else
+    untardir="$compiledir"
+  fi
+
   archive_type=`file -b $archive_file | cut -d" " -f1`
   case $archive_type in
-    bzip2) UNARCHIVE_CMD="tar -C $compiledir -jxvf" ;;
-    gzip) UNARCHIVE_CMD="tar -C $compiledir -zxvf" ;;
-    XZ) UNARCHIVE_CMD="tar -C $compiledir -Jxvf" ;;
-    Zip) UNARCHIVE_CMD="unzip -d $compiledir" ;;
+    bzip2) UNARCHIVE_CMD="tar -C $untardir -jxvf" ;;
+    gzip) UNARCHIVE_CMD="tar -C $untardir -zxvf" ;;
+    XZ) UNARCHIVE_CMD="tar -C $untardir -Jxvf" ;;
+    Zip) UNARCHIVE_CMD="unzip -d $untardir" ;;
     *) echo "$PROG: $archive_file: Unknown file type" >&2 ; exit 1 ;;
   esac
 
   $UNARCHIVE_CMD $archive_file || { echo "Error: Unable to unarchive the file $archive_file"; exit 1; }
+
+  exec_cfg_cmds "$pkgconfig" "post-untar" || exit 1
+  exec_var_cmds "$post_untar_cmds" "Post-untar" || exit 1
 fi
 
 # END OF STAGE 1
@@ -386,6 +403,9 @@ if [ $skip_config_stage -eq 0 ]; then
     echo "$PROG: configure failed" >&2
     exit 1
   fi
+
+  exec_cfg_cmds "$pkgconfig" "post-config" || exit 1
+  exec_var_cmds "$post_config_cmds" "Post-config" || exit 1
 
   popd
 
