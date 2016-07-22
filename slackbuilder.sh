@@ -489,13 +489,13 @@ if [ $skip_install_stage -eq 0 ]; then
       ;;
     prefix|--prefix|PREFIX)
       if [ $ruby_package -eq 1 ]; then
-        install_destdir=$destdir
+        [ "$install_destdir" ] || install_destdir=$destdir
       else
-        install_destdir=$destdir$prefix
+        [ "$install_destdir" ] || install_destdir=$destdir$prefix
       fi
       ;;
     *)
-      install_destdir=$destdir
+      [ "$install_destdir" ] || install_destdir=$destdir
   esac
 
   for d in . $extra_install_dirs; do
