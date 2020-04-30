@@ -125,7 +125,7 @@ is_config_section() {
 get_config_section() {
   local cfgfile="$1"
   local cfgsect="$2"
-  sed -n -e "/^\[$cfgsect\] *\$/,/^\[[^ ]/p" "$cfgfile" | egrep -v '^(\[[^ ]|#)'
+  sed -E -n -e "/^\[$cfgsect\] *\$/,/^\[[A-Za-z0-9_-]+\] *\$/p" "$cfgfile" | egrep -v '^(\[[A-Za-z0-9_-]+\] *$|#)'
 }
 
 
