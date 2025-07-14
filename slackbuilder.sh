@@ -604,7 +604,7 @@ if [ $skip_prepare_stage -eq 0 ]; then
   # Look for any files that are not owner/group root:root.  Skip any
   # files/directories that have the setuid or setgid bit set.  
   echo "Chowning files whose uid/gid are not 0 (but skipping setuid/gid files)"
-  find . -not \( -uid 0 -and -gid 0 \) -not -perm -4000 -not -perm -2000 -exec chown root.root {} \; -print
+  find . -not \( -uid 0 -and -gid 0 \) -not -perm -4000 -not -perm -2000 -exec chown root:root {} \; -print
 
   if [ $chgrp_bin -eq 1 ]; then
     for d in bin sbin usr/bin usr/sbin usr/X11R6/bin ]; do
